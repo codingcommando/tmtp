@@ -325,6 +325,15 @@ def intersectionOfLines(xstart1, ystart1, xend1, yend1, xstart2, ystart2, xend2,
     y = (m1 * x) + b1
     return x, y
 
+def generateOutset(pathObj, distance):
+    """
+    Take a pysvg path object and generate another sysvg path object that is offset
+    from the first. Positive offset is to the right in the direction of travel,
+    negative is to the left
+    """
+
+    return
+
 
 ################ End of things which have been adapted and are used in the new framework ################
 #
