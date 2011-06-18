@@ -332,6 +332,141 @@ def generateOutset(pathObj, distance):
     negative is to the left
     """
 
+    dd =pathObj.get_d()
+    # Walk each point in the path
+    path_tokens = dd.split() # split path into pieces, separating at each 'space'
+
+    # from here on is the old bounding box code to be modified
+
+    # Basically - we need to do the following
+    #
+    # For each point:
+    #     For the segment behind and the segment ahead, calculate the normal vector - They will be the same in some cases
+    #
+    #         M - Move to
+    #         L - Line to
+    #         H - Horizontal Line to
+    #         V - Vertical Line to
+    #         C - Curve to (cubic Bezier with two control points)
+    #         S - Shorthand Curve to (cubic Bezier with reflected second control point)
+    #         Q - Quadratic Bezier curve to (with two control points)
+    #         T - Quadratic Bezier curve to (with reflected second control point)
+    #         A - Elliptical arc 
+    #         Z - Close curve
+    #         
+    #     For the segment behind multiply the normal vector for each endpoint by the offset to get endpoints for the new offset segment
+    #
+    # For each segment:
+    #     Extend or truncate the segment to meet the ones before and after it
+    #     This can be a mess
+
+    tok = iter(path_tokens)
+
+    try:
+        cmd = tok.next()
+        if cmd != 'M':
+            raise ValueError("Unable to handle paths that don't start with an absolute move")
+        currentx = float(tok.next())
+        currenty = float(tok.next())
+        beginx = currentx
+        beginy = currenty
+        xlist.append(currentx)
+        ylist.append(currenty)
+    except:
+        raise ValueError("Can't handle a path string shorter than 3 tokens")
+
+    while True:
+        try:
+            cmd = tok.next()
+            #print 'processing ', cmd
+            if cmd.islower():
+                relative = True
+            else:
+                relative = False
+
+            cmd = cmd.upper()
+
+            if ((cmd == 'M') or (cmd == 'L') or (cmd == 'T')):
+                # Note T is really for a Bezier curve, this is a simplification
+                x = float(tok.next())
+                y = float(tok.next())
+                if relative:
+                    currentx = currentx + x
+                    currenty = currenty + y
+                else:
+                    currentx = x
+                    currenty = y
+                xlist.append(currentx)
+                ylist.append(currenty)
+            elif cmd == 'H':
+                x = float(tok.next())
+                if relative:
+                    currentx = currentx + x
+                else:
+                    currentx = x
+                xlist.append(currentx)
+            elif cmd == 'V':
+                y = float(tok.next())
+                if relative:
+                    currenty = currenty + y
+                else:
+                    currenty = y
+                ylist.append(currenty)
+            elif ((cmd == 'C') or (cmd == 'S') or (cmd == 'Q')):
+                # Curve
+                # TODO This could be innacurate, we are only basing on control points not the actual line
+
+                # 'C' uses two control points, 'S' and 'Q' use one
+                if cmd == 'C':
+                    cpts = 2
+                else:
+                    cpts = 1
+
+                # control points
+                for i in range(0,cpts):
+                    #print '  Control Point ',
+                    x = float(tok.next())
+                    y = float(tok.next())
+                    #print 'xy = ', x, y
+                    if relative:
+                        tmpx = currentx + x
+                        tmpy = currenty + y
+                    else:
+                        tmpx = x
+                        tmpy = y
+                    xlist.append(tmpx)
+                    ylist.append(tmpy)
+
+                # final point is the real curve endpoint
+                x = float(tok.next())
+                y = float(tok.next())
+                if relative:
+                    currentx = currentx + x
+                    currenty = currenty + y
+                else:
+                    currentx = x
+                    currenty = y
+                xlist.append(currentx)
+                ylist.append(currenty)
+            elif cmd == 'A':
+                # TODO implement arcs - punt for now
+                # See http://www.w3.org/TR/SVG/paths.html#PathElement
+                raise ValueError('Arc commands in a path are not currently handled')
+            elif cmd == 'Z':
+                # No argumants to Z, and no new points
+                # but we reset position to the beginning
+                currentx = beginx
+                currenty = beginy
+                continue
+            else:
+                raise ValueError('Expected a command letter in path')
+
+        except StopIteration:
+            #print 'Done'
+            # we're done
+            break
+
+
     return
 
 
