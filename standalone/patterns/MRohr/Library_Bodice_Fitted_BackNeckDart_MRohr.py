@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # Library_Bodice_Fitted_BackNeckDart_MRohr.py
-# pattern no. 111B 2
+# pattern no. 111 B2
 # Based on Block_Bodice_Fitted_SingleDart_MRohr.py pattern no. 111 A1
 # This is a library block
 # to be used to make other patterns.
