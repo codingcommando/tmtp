@@ -140,8 +140,8 @@ class PatternDesign():
 		Auh3 = rPointP(A, 'Auh3', pntIntersectLinesP(p4, p5, AW4, AD1)) # intersect upper hip line & outside dart leg
 		Auh4 = rPointP(A, 'Auh4', pntIntersectLinesP(p4, p5, AS2, AW5)) # intersect upper hip line & straight line between outside waist & outside lower hip line
 		buhArc = lineLengthP(AC5, Auh2) + lineLengthP(Auh3, Auh4)
-		if (buhArc < cd.back_upper_hip_arc):
-			distance = cd.back_upper_hip_arc - buhArc
+		if (buhArc < cd.back_upper_hip_width*0.5):
+			distance = cd.back_upper_hip_width*0.5 - buhArc
 		else:
 			distance = 1.0*CM
 		AS1 = rPointP(A, 'AS1', pntOffLineP(Auh4, Auh3, distance)) # adjust S1 position outwards along upper hip line
