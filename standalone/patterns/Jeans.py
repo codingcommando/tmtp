@@ -85,9 +85,9 @@ class PatternDesign():
 
 		# All measurements are in pixels...CM=CM_TO_PX, IN=IN_TO_PX, etc.
 		#client & pattern measurements
-		FRONT_WAIST_ARC=(cd.front_waist_arc)
-		FRONT_ABDOMEN_ARC=(cd.front_abdomen_arc)
-		FRONT_HIP_ARC=(cd.front_hip_arc)
+		FRONT_WAIST_ARC=(cd.front_waist_width*0.5)
+		FRONT_ABDOMEN_ARC=(cd.front_abdomen_width*0.5)
+		FRONT_HIP_ARC=(cd.front_hip_width*0.5)
 		BACK_WAIST_ARC=(cd.waist_circumference - (2*FRONT_WAIST_ARC))/2.0
 		BACK_ABDOMEN_ARC=(cd.abdomen_circumference - (2*FRONT_ABDOMEN_ARC))/2.0
 		BACK_HIP_ARC=(cd.hip_circumference - (2*FRONT_HIP_ARC))/2.0
