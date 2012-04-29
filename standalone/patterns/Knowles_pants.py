@@ -43,11 +43,11 @@ class PatternDesign():
 		doc.add(pants)
 
 		# pattern points
-		a = pPoint(cd.front_lower_hip_arc + SEAM_EASE, 0.0) # front waist center pattern calculation point
+		a = pPoint(cd.front_lower_hip_width*0.5 + SEAM_EASE, 0.0) # front waist center pattern calculation point
 		b = pPoint(a.x,  cd.outseam) # front hem inseam pattern calculation point (pPoint)
 		c = pPoint(0.0, 0.0) # back & front & back waist outseam pPoint
 		d = pPoint(0.0, cd.outseam) # front & back hem outseam pPoint
-		e = pPoint(0.0 - (cd.back_lower_hip_arc + SEAM_EASE), 0.0) # back waist center pPoint
+		e = pPoint(0.0 - (cd.back_lower_hip_width*0.5 + SEAM_EASE), 0.0) # back waist center pPoint
 		f = pPoint(e.x, cd.outseam) # back hem inseam pPoint
 		g = pPoint(0.0, cd.side_lower_hip_length) # front & back hip outseam pPoint
 		h = pPoint(a.x, cd.side_lower_hip_length) # front inseam pPoint
@@ -79,7 +79,7 @@ class PatternDesign():
 		gg = pPoint(e.x, 0.0 - 1.0*IN) # back waistline center - raised by 1"
 		hh = pPoint(gg.x + (1.0+(7/8))*IN, gg.y) # back waistline center - moved towards back outseam by 1-7/8"
 
-		pnts = pntIntersectLineCircleP(hh, cd.back_waist_arc, e, a) # circle center=hh, radius=back_waist_arc, line->points e & a. Returns pnts.p1 and pnts.p2
+		pnts = pntIntersectLineCircleP(hh, cd.back_waist_width*0.5, e, a) # circle center=hh, radius=back_waist_width*0.5, line->points e & a. Returns pnts.p1 and pnts.p2
 		if (pnts.p1.y >= hh.y): # if first intersection is lower (greater y) on grid than hh then select it as back waist at outseam
 			ii = pnts.p1
 		else:
@@ -87,7 +87,7 @@ class PatternDesign():
 
 		jj = pPoint(a.x, 0.0 + 1.0*IN) # front waistline center - lowered by 1"
 		kk = pPoint(jj.x - 1.0*IN, jj.y) # front waistline center - moved away from center by 1"
-		ll = pPoint(kk.x - sqrt(cd.front_1_waist_arc**2 + (1.0**2)), 0.0)
+		ll = pPoint(kk.x - sqrt(cd.front_1_waist_width*0.5**2 + (1.0**2)), 0.0)
 		mm = pntFromDistanceAndAngleP(k, 1.0*IN, angleOfDegree(45.0))
 		nn = pntFromDistanceAndAngleP(l, 1.0*IN, angleOfDegree(135.0))
 
