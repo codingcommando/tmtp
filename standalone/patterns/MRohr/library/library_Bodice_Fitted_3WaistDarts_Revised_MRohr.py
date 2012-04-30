@@ -186,7 +186,7 @@ class PatternDesign():
         B.label_x,  B.label_y = hh.x, hh.y + 2*IN
         # grid
         grid = path()
-        addToPath(grid, 'M', bb, 'L', ee, 'L', ff, 'L', gg, 'M', cc, 'L', dd, 'M', jj, 'L', kk, 'M', oo, 'L', pp,  'M', oo, 'L', dd,  'M', kk, 'L', ll, 'L', mm)
+        addToPath(grid, 'M', bb, 'L', ee, 'L', ff, 'L', gg, 'M', cc, 'L', dd, 'M', jj, 'L', kk, 'M', oo, 'L', pp,  'M', oo, 'L', dd,  'M', kk, 'L', mm)
         # seamline & cuttingline
         seamLine = path()
         cuttingLine = path()
