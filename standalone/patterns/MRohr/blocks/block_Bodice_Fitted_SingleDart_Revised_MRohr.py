@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#!/usr/bin/env python
 # block_Bodice_Fitted_SingleDart_Revised_MRohr.py
 # pattern no. 111A 2
 # This is a pattern block to be used to make other patterns.
@@ -34,16 +35,16 @@ def pattern(doc, A, B, cd):
     """
 
     # bodice pattern points 
-    SHOULDER_WIDTH_EASE = ((3/8.0)*IN)* (cd.back_chest_narrow_width/(7.5*IN))
+    SHOULDER_WIDTH_EASE = ((3/8.0)*IN)* (cd.back_shoulder_width*0.5/(7.5*IN))
     SHOULDER_SEAM_EASE = (.25*IN)*(cd.shoulder/(5.25*IN))
     FRONT_SHOULDER_HEIGHT_EASE = (2.0*IN)*(cd.front_shoulder_height/(18.0*IN))  
     WAIST_WIDTH_EASE = (1.0*IN)*(cd.waist_circumference/(28.0*IN))
     BUST_POINT_ADJUSTMENT = (0.5*IN)*(cd.bust_circumference/(36.0*IN))
     BUST_HEIGHT_EASE = (.75*IN)*(cd.back_waist_length/(16.5*IN))
-    BUST_WIDTH_EASE = (2.0*IN)*(cd.bust_circumference/(36.0*IN))
-    BACK_BUST_WIDTH_EASE = BUST_WIDTH_EASE * (cd.back_bust_width/cd.bust_circumference)
-    FRONT_BUST_WIDTH_EASE = BUST_WIDTH_EASE * (cd.front_bust_width/cd.bust_circumference)
+    BUST_WIDTH_EASE = (4.0*IN)*(cd.bust_circumference/(36.0*IN))
+    print 'BUST_WIDTH_EASE', BUST_WIDTH_EASE
     FRONT_BREAST_WIDTH_EASE = ((3/8.0)*IN)*(cd.bust_circumference/(36.0*IN))
+    print 'FRONT_BREAST_WIDTH_EASE', FRONT_BREAST_WIDTH_EASE
     FRONT_BREAST_HEIGHT_ADJUSTMENT = (2.0*IN)*(cd.front_shoulder_height/(18.0*IN))    
     BACK_ARMSCYE_CURVE_DEPTH = (1.25*IN)*(cd.bust_circumference/(36.0*IN))
     FRONT_ARMSCYE_CURVE_DEPTH = (1.0*IN)*(cd.bust_circumference/(36.0*IN))    
@@ -52,24 +53,24 @@ def pattern(doc, A, B, cd):
     ee = rPoint(B, 'ee', 0.,  0.) # back center shoulder height 
     bb = rPoint(B, 'bb', 0., cd.back_shoulder_height)  # back center waist
     aa = rPoint(B, 'aa', 0.,  bb.y - cd.back_waist_length) # nape
-    ff = rPoint(B, 'ff', 0., ee.x - (cd.back_chest_narrow_width/2.0 + SHOULDER_WIDTH_EASE)) # back shoulder width. Improved
+    ff = rPoint(B, 'ff', ee.x - (cd.back_shoulder_width/2.0 + SHOULDER_WIDTH_EASE),  ee.y) # back shoulder width. Improved
     hh = rPoint(B, 'hh', aa.x - cd.neck_width/2.0, ee.y) # back neck width. Improved
     height = abs(lineLengthP(hh, ff))
     hypoteneuse = cd.shoulder + SHOULDER_SEAM_EASE
     base = (abs(hypoteneuse**2.0 - height**2.0))**0.5
     gg = rPoint(B, 'gg', ff.x, ff.y + base) # back shoulder tip. Improved
     jj = rPoint(B, 'jj', 0., aa.y + lineLengthP(aa, bb)/2.0 + BUST_HEIGHT_EASE) # back center bust. Improved
-    j = rPoint(A, 'j', jj.x - (cd.bust_circumference/2.0) - BUST_WIDTH_EASE,  jj.y) # front center bust. Improved
+    j = rPoint(A, 'j', jj.x - (cd.bust_circumference + BUST_WIDTH_EASE)/2.0,  jj.y) # front center bust. Improved
     cc = rPoint(B, 'cc', 0., aa.y + lineLengthP(aa, jj)/2.0) # back across back height
-    dd = rPoint(B, 'dd', cc.x - cd.back_chest_narrow_width/2.0, cc.y) # back across back width
-    kk = rPoint(B, 'kk', jj.x - cd.back_bust_width - BACK_BUST_WIDTH_EASE, jj.y ) # back bust width. Improved
-    k = rPointP(A, 'k', kk) # front bust width
+    dd = rPoint(B, 'dd', cc.x - cd.back_across_chest_width/2.0, cc.y) # back across back width
+    kk = rPoint(B, 'kk', jj.x - (cd.back_bust_width + BUST_WIDTH_EASE/2.0)/2.0, jj.y ) # back bust width. Improved
+    k = rPoint(A, 'k', j.x + (cd.front_bust_width + BUST_WIDTH_EASE/2.0)/2.0, j.y) # front bust width
     oo = rPoint(B, 'oo', dd.x, jj.y) # back armscye corner
     pp = rPointP(B, 'pp', pntFromDistanceAndAngleP(oo, BACK_ARMSCYE_CURVE_DEPTH, angleOfDegree(225))) # back armscye curve
     v = rPoint(A, 'v', j.x, ee.y) # front center reference point
     b = rPoint(A, 'b', v.x, v.y + cd.front_shoulder_height + FRONT_SHOULDER_HEIGHT_EASE) # front center waist. Improved
     e = rPoint(A, 'e', v.x, b.y - cd.front_shoulder_height) # front shoulder height
-    f = rPoint(A, 'f', e.x + cd.front_across_chest_width + SHOULDER_WIDTH_EASE, e.y) # front shoulder width. Improved
+    f = rPoint(A, 'f', e.x + cd.front_shoulder_width/2.0, e.y) # front shoulder width. Improved
     h = rPoint(A, 'h', e.x + cd.neck_width/2.0, e.y) # front neck width. Improved    
     height = abs(lineLengthP(h, f))
     hypoteneuse = cd.shoulder # no shoulder seam ease for the front shoulder
@@ -77,28 +78,29 @@ def pattern(doc, A, B, cd):
     g = rPoint(A, 'g', f.x, f.y + base) # front shoulder tip
     a = rPoint(A, 'a',  e.x, b.y - cd.front_waist_length) # front neck height
     u = rPointP(A, 'u', pntFromDistanceAndAngleP(e, NECK_DEPTH, angleOfDegree(45))) # front neck curve
-    c = rPointP(A, 'c', pMidpointP(a, h)) # front across chest height
-    d = rPoint(A, 'd', c.x, c.y + cd.front_across_chest_width) # front across chest width
+    c = rPointP(A, 'c', pMidpointP(a, j)) # front across chest height
+    d = rPoint(A, 'd', c.x + cd.front_across_chest_width/2.0, c.y) # front across chest width
     m = rPoint(A, 'm', d.x, j.y) # front armscye corner
     n = rPointP(A, 'n', pntFromDistanceAndAngleP(m, FRONT_ARMSCYE_CURVE_DEPTH, (-45))) # front armscye curve
     o = rPoint(A, 'o', j.x, j.y + FRONT_BREAST_HEIGHT_ADJUSTMENT) # front breast height
     p = rPoint(A, 'p', o.x + lineLengthP(c, d)/2.0 + BUST_POINT_ADJUSTMENT, o.y) # front dart apex
-    t = rPoint(A, 't', m.x + FRONT_BREAST_WIDTH_EASE, o.y) # front breast width
+    t = rPoint(A, 't', k.x + FRONT_BREAST_WIDTH_EASE, o.y) # front breast width
     l = rPointP(A, 'l', pntOnLineP(k, t, cd.side)) # front waist width
-    s = rPoint(A, 's', p.x + (17/8.0)*IN, b.y) # front waist dart midpoint
-    FRONT_DART_WIDTH = (lineLengthP(b, s) + lineLengthP(s, l)) - (cd.front_waist_width + WAIST_WIDTH_EASE/2.0)
+    s = rPoint(A, 's', p.x + (17/8.0)*IN, b.y) # front waist dart midpoint, offset from dart apex by 2-1/8
+    FRONT_DART_WIDTH = abs((lineLengthP(b, s) + lineLengthP(s, l)) - (cd.front_waist_width + WAIST_WIDTH_EASE/2.0))
     q = rPoint(A, 'q', s.x - FRONT_DART_WIDTH/2.0, b.y) # front waist dart inside    
     r = rPointP(A, 'r', pntOnLineP(s, l, FRONT_DART_WIDTH/2.0))
     rr = rPointP(B, 'rr', pntOnLineP(jj, kk, lineLengthP(cc, dd)/2.0)) # back waist dart apex
-    qq = rPoint(B, 'qq', cc.x + (1.0*IN), bb.y) # back waist dart leg inside
-    nn = rPoint(B, 'nn', cc.x - (1.0*IN), bb.y) # back waist dart leg outside
-    ll = rPoint(B, 'll', kk.x, bb.y)
-    pnts = pntIntersectCircleCircleP(kk, cd.side, nn, (cd.back_waist + WAIST_WIDTH_EASE/2.0) - lineLengthP(bb, qq))   
+    ss = rPoint(B, 'ss', rr.x, bb.y) # back waist dart midpoint   
+    BACK_DART_WIDTH = (1.0*IN)
+    qq = rPoint(B, 'qq', rr.x + BACK_DART_WIDTH/2.0, bb.y) # back waist dart leg inside
+    nn = rPoint(B, 'nn', rr.x - BACK_DART_WIDTH/2.0, bb.y) # back waist dart leg outside
+    pnts = pntIntersectCircleCircleP(kk, cd.side, nn, (cd.back_waist + WAIST_WIDTH_EASE)/2.0 - lineLengthP(bb, qq))   
     if (pnts.p1.x < nn.x):
         mm = rPointP(B, 'mm', pnts.p1)
     else:
-        mm = rPointP(B, 'mm', pnts.p2)
-        
+        mm= rPointP(B, 'tt', pnts.p2)
+
     #front neck control points
     angle = angleOfLineP(h, g)+angleOfDegree(90)
     pnt = pPoint(a.x + 500, a.y) # arbitrary point to create horizontal calculation for h_c1
@@ -113,7 +115,7 @@ def pattern(doc, A, B, cd):
     k_c2 = cPoint(A, 'k_c2', k.x - lineLengthP(n, k)/3.0, k.y) # b/w n & k, horizontal with k.y               
 
     #back neck control points
-    hh_c1 =  cPoint(B, 'hh_c1', aa.x - lineLengthP(aa, hh)/2.0,  a.y)
+    hh_c1 =  cPoint(B, 'hh_c1', aa.x - lineLengthP(aa, hh)/2.0,  aa.y)
     hh_c2 =  cPointP(B, 'hh_c2', pntOnLineP(hh, hh_c1, lineLengthP(hh, hh_c1)/2.0))
     # back armscye control points   
     pnts = pointList(gg, dd, pp, kk)
@@ -122,10 +124,15 @@ def pattern(doc, A, B, cd):
     pp_c1, pp_c2 = cPointP(B, 'pp_c1', c1[1]), cPointP(B, 'pp_c2', c2[1])
     kk_c1, kk_c2 = cPointP(B, 'kk_c1', c1[2]), cPointP(B, 'kk_c2', c2[2]) 
     
+    # adjust kk_c1 & pp_c2 to smooth out armscye back curve:
+    pnt1 = pntOnLineP(pp, kk_c2, lineLengthP(pp, kk_c1))
+    kk_c1.x, kk_c1.y = pnt1.x, pnt1.y
+    pnt2 = pntFromDistanceAndAngleP(pp, lineLengthP(pp, pp_c2), angleOfLineP(kk_c1, pp))
+    
     for letter in (a, b, c, d, e, f, g, h, j, k, l, m, n, o, p, q, r, s, t, u, v):
         print letter.x, letter.y
     print '****'
-    for letter in (aa, bb, cc, dd, ee, ff, gg, hh, jj, kk, ll, mm, nn, oo, pp, qq, rr):
+    for letter in (aa, bb, cc, dd, ee, ff, gg, hh, jj, kk, mm, nn, oo, pp, qq, rr):
         print letter.x, letter.y
 
     # return all variables to the calling program
