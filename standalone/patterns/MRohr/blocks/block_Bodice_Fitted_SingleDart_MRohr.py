@@ -26,7 +26,7 @@ def pattern(doc, A, B, cd):
     #pattern points
     a = rPoint(A, 'a', 0.0, 0.0) # center neck
     b = rPoint(A, 'b', 0., cd.front_waist_length) # center waist
-    c = rPoint(A, 'c',  0., cd.front_waist_length/5.0) # center chest narrow
+    c = rPoint(A, 'c',  0., a.y + cd.front_waist_length/5.0) # center chest narrow
     d = rPoint(A, 'd', a.x + cd.front_across_chest_width/2.0, c.y) # side chest narrow - armscye narrowest point
     e = rPoint(A, 'e', 0., b.y - cd.front_shoulder_height)
     #f = rPoint(A, 'f', lineLengthP(c, d)+ 0.5*IN, e.y)
@@ -74,7 +74,7 @@ def pattern(doc, A, B, cd):
     aa = rPoint(B, 'aa', 0., 0.)
     bb = rPoint(B, 'bb', 0., cd.back_waist_length)
     cc = rPoint(B, 'cc', 0., cd.back_waist_length/4.0)
-    dd = rPoint(B, 'dd', aa.x - cd.back_chest_narrow_width/2.0, cc.y)
+    dd = rPoint(B, 'dd', aa.x - cd.back_across_chest_width/2.0, cc.y)
     ee = rPoint(B, 'ee', 0.,  bb.y - cd.back_shoulder_height)
     #ff = rPoint(B, 'ff', dd.x - .25*IN, ee.y)
     ff = rPoint(B, 'ff', aa.x - cd.back_shoulder_width/2.0, ee.y) #changed ff formula to accommodate my shoulders - Improvement
