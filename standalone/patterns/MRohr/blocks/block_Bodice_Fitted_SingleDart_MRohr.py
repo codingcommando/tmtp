@@ -42,12 +42,12 @@ def pattern(doc, A, B, cd):
     m = rPoint(A, 'm', d.x, k.y)
     pnt = pntFromDistanceAndAngleP(m, 1*IN, angleOfDegree(315.0)) # TODO - add dictionary for distance to use based on the customer's chest size
     n = rPointP(A, 'n', pnt)
-    o = rPoint(A, 'o', 0., c.y + lineLengthP(c, b)/2.0)
-    p = rPoint(A, 'p', a.x + lineLengthP(e, f)/2.0, o.y)
-    q = rPoint(A, 'q', p.x - 0.5*IN, b.y)
-    length1 = lineLengthP(p, q)
-    length2 = cd.front_waist_width/2.0 - lineLengthP(b, q)
-    Pnts = pntIntersectCircleCircleP(p, length1, l, length2)
+    o = rPoint(A, 'o', 0., c.y + lineLengthP(c, b)/2.0) # dart apex height
+    p = rPoint(A, 'p', a.x + lineLengthP(e, f)/2.0, o.y) # dart apex
+    q = rPoint(A, 'q', p.x - 0.5*IN, b.y) # dart inside leg
+    length1 = lineLengthP(p, q) # dart leg length
+    length2 = cd.front_waist_width/2.0 - lineLengthP(b, q) # length of pattern between dart outside leg & side seam
+    Pnts = pntIntersectCircleCircleP(p, length1, l, length2) # 
     if (Pnts.intersections != 0):
         if (Pnts.p1.y > p.y):
             pnt = Pnts.p1
@@ -84,7 +84,7 @@ def pattern(doc, A, B, cd):
     base = (abs(hypoteneuse**2.0 - height**2.0))**0.5
     gg = rPoint(B, 'gg', ff.x, ff.y + base) 
     jj = rPoint(B, 'jj', 0., bb.y - cd.side + .25*IN)
-    kk = rPoint(B, 'kk', aa.x - cd.back_bust_width/2.0, jj.y)
+    kk = rPoint(B, 'kk', aa.x - cd.back_underarm_width/2.0, jj.y)
     ll = rPoint(B, 'll', kk.x, kk.y + cd.side)
     mm = rPoint(B, 'mm', ll.x + .75*IN, ll.y)
     nn = rPoint(B, 'nn', aa.x - lineLengthP(jj, kk)/2.0, bb.y)
